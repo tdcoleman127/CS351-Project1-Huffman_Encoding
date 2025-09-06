@@ -28,7 +28,7 @@ def showTree(node):
         print("Internal Node")
         print(node.val)
     else:
-        print("Character Node")
+        print("Character Node for: " + node.key)
         print(node.val)
     showTree(node.right)
 
@@ -84,7 +84,11 @@ def buildHuffmanCodeTree(freqCounts):
         heapq.heappush(priority_queue, T)
 
     # print(priority_queue)
-    return heapq.heappop(priority_queue)
+    root = heapq.heappop(priority_queue)
+    print("The root node should be: ")
+    print(root.val)
+    print("Verified with internal node key: " + root.key)
+    return root
     pass
 
 def getHuffmanCodes(huffTree):
