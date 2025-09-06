@@ -10,13 +10,14 @@ import os
 
 # Node class for Huffman Tree
 class Node:
-    def __init__(self, key):
+    def __init__(self, key, val):
         self.key = key
+        self.val = val
         self.left = None
         self.right = None
     
     def __lt__(self, other):
-        return self.key < other.key
+        return self.val < other.val
 
 # functions for Step 1
 def getFrequencyCounts(fname):
@@ -45,20 +46,20 @@ def buildHuffmanCodeTree(freqCounts):
         print("Initializing node: " + c)
         print("Character frequency value: ")
         print(freqCounts[c])
-        T = Node(freqCounts[c])
+        T = Node(c, freqCounts[c])
         heapq.heappush(priority_queue, T)
     
     while len(priority_queue) > 1:
-        print(priority_queue)
-        f1 = heapq.nsmallest(1, priority_queue)
+        f1 = heapq.nsmallest(1, priority_queue)[0]
         t1 = heapq.heappop(priority_queue)
-        f2 = heapq.nsmallest(1, priority_queue)
+        f2 = heapq.nsmallest(1, priority_queue)[0]
         t2 = heapq.heappop(priority_queue)
 
         # Creating the linking node
         print("Creating linking node")
-        print("Linking node key")
-        T = Node(f1.key + f2.key)
+        print("Linking node with associated value")
+        print(f1.val + f2.val)
+        T = Node("IN", f1.val + f2.val)
         T.left = t1
         T.right = t2
 
@@ -85,7 +86,7 @@ def convertFromHuffman(encodedname, hcodename):
 
 
 def cs351Proj1():
-    fname = input("Enter filename")
+    fname = input("Enter filename\n")
     print ("Original File name:", fname)
     freqDict = getFrequencyCounts(fname)
     buildHuffmanCodeTree(freqDict)
