@@ -155,23 +155,33 @@ def determineHuffmanCode(fname):
 
 # function for Step 2
 def convertToHuffman(fname, hcodename):
-    fileToConvert = fname
-    huffCodeTuples = hcodename
+    # Initalize values for encoded string and dictionary of pairs
     encodedStr = ""
-    
+    pairDict = {}
+
+    # Convert every line of file into a key-value dictionary
+    pairs_file = open(hcodename, "r")
+    for line in pairs_file:
+        boxed = fname.split("    ")
+        newName = boxed[0] + "-hcp." + boxed[1]
+        # Create a ke
+        pairDict[boxed[0]] = boxed[1]
+    pairs_file.close()
+
     # Read file char by char, line by line
     for line in fname:
         for char in line:
-            for item in huffCodeTuples:
-                if char == item[0]:
-                    encodedStr += item[1]
+            # If the character the original file is
+            # a key in the dictionary of pairs
+            if char in pairDict:
+                # add it to the encoded string
+                encodedStr += pairDict[char]
 
     print(encodedStr)
 
-    # Creating new filename with "-hcp"
+    # Creating new filename with "-hec"
     boxed = fname.split(".")
     newName = boxed[0] + "-hec." + boxed[1]
-
 
     # Writing to new file
     new_file = open(newName, "w")
