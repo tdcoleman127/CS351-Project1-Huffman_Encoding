@@ -39,7 +39,7 @@ def goInOrder(node, final, currentStr):
         # print("The string being added is: " + currentStr)
         new_tuple = (node.key, currentStr)
         final.append(new_tuple)
-        print(final)
+        # print(final)
 
     goInOrder(node.right, final, currentStr + '1')
 
@@ -105,7 +105,9 @@ def getHuffmanCodes(huffTree):
     final = []
     currentStr = ""
     goInOrder(huffTree, final, currentStr)
-    print("The final huffman array should be: ")
+    print("The final Huffman array before and after sorting: ")
+    print(final)
+    final.sort(key=lambda item: item[0])
     print(final)
     return final
     pass
@@ -115,13 +117,18 @@ def determineHuffmanCode(fname):
     freqTree = buildHuffmanCodeTree(freqDict)
     final = getHuffmanCodes(freqTree)
 
-    # Creating new file
-    filename = fname + "-hcp"
-    new_file = open(filename + ".txt", "w")
+    # Creating new filename with "-hcp"
+
+    boxed = fname.split(".")
+    newName = boxed[0] + "-hcp." + boxed[1]
+
+    # Writing to new file
+
+    new_file = open(newName, "w")
     for item in final:
         new_file.write(str(ord(item[0])) + "  " + item[1] + "\n")
     new_file.close()
-    return filename + ".txt"
+    return newName
     pass
 
 # function for Step 2
