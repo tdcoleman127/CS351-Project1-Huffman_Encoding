@@ -62,15 +62,11 @@ def getFrequencyCounts(fname):
     return newDict
 
 def buildHuffmanCodeTree(freqCounts):
-    # Get the dictionary of frequency counts
-    # And initialize priority queue (MUST heapify first!)
+    # Initialize priority queue (MUST heapify first!)
     priority_queue = []
-    heapq.heapify(priority_queue)
+    heapq.heapify(priority_queue)   
 
-    #Initalizing priority queue
-    
-    #Sort frequency counts
-
+    # Initalizing tree nodes with character frequency values
     for c in freqCounts:
         print("Initializing node: " + c)
         print("Character frequency value: ")
@@ -79,7 +75,7 @@ def buildHuffmanCodeTree(freqCounts):
         heapq.heappush(priority_queue, T)
     
     while len(priority_queue) > 1:
-        print(priority_queue)
+        # print(priority_queue)
         f1 = heapq.nsmallest(1, priority_queue)[0]
         t1 = heapq.heappop(priority_queue)
         f2 = heapq.nsmallest(1, priority_queue)[0]
@@ -106,9 +102,26 @@ def buildHuffmanCodeTree(freqCounts):
     pass
 
 def getHuffmanCodes(huffTree):
+    final = []
+    currentStr = ""
+    goInOrder(huffTree, final, currentStr)
+    print("The final huffman array should be: ")
+    print(final)
+    return final
     pass
 
 def determineHuffmanCode(fname):
+    freqDict = getFrequencyCounts(fname)
+    freqTree = buildHuffmanCodeTree(freqDict)
+    final = getHuffmanCodes(freqTree)
+
+    # Creating new file
+    filename = fname + "-hcp"
+    new_file = open(filename + ".txt", "w")
+    for item in final:
+        new_file.write(str(ord(item[0])) + "  " + item[1] + "\n")
+    new_file.close()
+    return filename + ".txt"
     pass
 
 # function for Step 2
@@ -123,16 +136,9 @@ def convertFromHuffman(encodedname, hcodename):
 def cs351Proj1():
     fname = input("Enter filename\n")
     print ("Original File name:", fname)
-    freqDict = getFrequencyCounts(fname)
-    final = []
-    currentStr = ""
-
-    goInOrder(buildHuffmanCodeTree(freqDict), final, currentStr)
-    print("The final huffman array should be: ")
-    print(final)
-
-    # hcodename = determineHuffmanCode(fname)
-    # print ("Huffman Code File name:", hcodename)
+    
+    hcodename = determineHuffmanCode(fname)
+    print ("Huffman Code File name:", hcodename)
     
     # encodedname = convertToHuffman(fname, hcodename)
     # print ("Huffman Encoded File name:", encodedname)
