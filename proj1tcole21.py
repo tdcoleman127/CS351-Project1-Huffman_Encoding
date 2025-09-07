@@ -147,7 +147,7 @@ def determineHuffmanCode(fname):
     # Writing to new file
     new_file = open(newName, "w")
     for item in huffCodes:
-        new_file.write(str(ord(item[0])) + "  " + item[1] + "\n")
+        new_file.write(str(ord(item[0])) + "    " + item[1] + "\n")
 
     # Closing newly created file
     new_file.close()
@@ -155,6 +155,29 @@ def determineHuffmanCode(fname):
 
 # function for Step 2
 def convertToHuffman(fname, hcodename):
+    fileToConvert = fname
+    huffCodeTuples = hcodename
+    encodedStr = ""
+    
+    # Read file char by char, line by line
+    for line in fname:
+        for char in line:
+            for item in huffCodeTuples:
+                if char == item[0]:
+                    encodedStr += item[1]
+
+    print(encodedStr)
+
+    # Creating new filename with "-hcp"
+    boxed = fname.split(".")
+    newName = boxed[0] + "-hec." + boxed[1]
+
+
+    # Writing to new file
+    new_file = open(newName, "w")
+    new_file.write(encodedStr)
+
+    return newName
     pass
 
 # function for Step 3
