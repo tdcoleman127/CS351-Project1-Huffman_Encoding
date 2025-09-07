@@ -155,38 +155,48 @@ def determineHuffmanCode(fname):
 
 # function for Step 2
 def convertToHuffman(fname, hcodename):
-    # Initalize values for encoded string and dictionary of pairs
+    testDict = {}
+    # Opening up the -hcp.txt file to read
+    file1 = open(hcodename, "r")
+    for line in file1:
+        print(line)
+        # Split by four spaces in file
+        scanningBox = line.split("    ")
+        print(scanningBox)
+        # Convert string version of ASCII value 
+        # to int, then to str, to get original char
+        newWord = chr(int(scanningBox[0])) + " with value " + scanningBox[1]
+        print("New word: " + newWord)
+        # Adding to a created dictionary of ASCII keys and Huffman Code values
+        testDict[chr(int(scanningBox[0]))] = scanningBox[1].rstrip('\n')
+    file1.close()
+
+    # Verifying results
+    print(testDict)
+
+    # Check for characters in the original file
     encodedStr = ""
-    pairDict = {}
-
-    # Convert every line of file into a key-value dictionary
-    pairs_file = open(hcodename, "r")
-    for line in pairs_file:
-        boxed = fname.split("    ")
-        newName = boxed[0] + "-hcp." + boxed[1]
-        # Create a ke
-        pairDict[boxed[0]] = boxed[1]
-    pairs_file.close()
-
-    # Read file char by char, line by line
-    for line in fname:
+    file2 = open(fname, "r")
+    for line in file2:
         for char in line:
-            # If the character the original file is
-            # a key in the dictionary of pairs
-            if char in pairDict:
-                # add it to the encoded string
-                encodedStr += pairDict[char]
-
+            if char in testDict:
+                print(char + " was found")
+                # Finding the Huffman value for the 
+                # char's key in the dictionary
+                huffVal = testDict[char]
+                encodedStr += huffVal
     print(encodedStr)
+    file2.close()
 
     # Creating new filename with "-hec"
-    boxed = fname.split(".")
-    newName = boxed[0] + "-hec." + boxed[1]
+    nameBox = fname.split(".")
+    newName = nameBox[0] + "-hec." + nameBox[1]
 
     # Writing to new file
     new_file = open(newName, "w")
     new_file.write(encodedStr)
-
+    new_file.close()
+    print(newName)
     return newName
     pass
 
@@ -202,8 +212,8 @@ def cs351Proj1():
     hcodename = determineHuffmanCode(fname)
     print ("Huffman Code File name:", hcodename)
     
-    # encodedname = convertToHuffman(fname, hcodename)
-    # print ("Huffman Encoded File name:", encodedname)
+    encodedname = convertToHuffman(fname, hcodename)
+    print ("Huffman Encoded File name:", encodedname)
     
     # decodedname = convertFromHuffman(encodedname, hcodename)
     # print ("Final/Decoded File name:", decodedname)
