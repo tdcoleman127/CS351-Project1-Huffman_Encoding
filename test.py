@@ -20,17 +20,28 @@ class Node:
     def __lt__(self, other):
         return self.val < other.val
     
-def showTree(node):
+def goInOrder(node, final, currentStr):
     if node is None:
         return
-    showTree(node.left)
+    
+    goInOrder(node.left, final, currentStr + '0')
+
+    # If the node is an internal node
     if(node.key == "IN"):
         print("Internal Node")
         print(node.val)
     else:
+        # If the node is an character node
         print("Character Node for: " + node.key)
         print(node.val)
-    showTree(node.right)
+
+        # Add the path to the character node to the overall array
+        # print("The string being added is: " + currentStr)
+        new_tuple = (node.key, currentStr)
+        final.append(new_tuple)
+        print(final)
+
+    goInOrder(node.right, final, currentStr + '1')
 
 
 # functions for Step 1
@@ -68,6 +79,7 @@ def buildHuffmanCodeTree(freqCounts):
         heapq.heappush(priority_queue, T)
     
     while len(priority_queue) > 1:
+        print(priority_queue)
         f1 = heapq.nsmallest(1, priority_queue)[0]
         t1 = heapq.heappop(priority_queue)
         f2 = heapq.nsmallest(1, priority_queue)[0]
@@ -76,6 +88,7 @@ def buildHuffmanCodeTree(freqCounts):
         # Creating the linking node
         print("Creating linking node:")
         print(f1.val + f2.val)
+        print("----------")
         T = Node("IN", f1.val + f2.val)
         T.left = t1
         T.right = t2
@@ -88,6 +101,7 @@ def buildHuffmanCodeTree(freqCounts):
     print("The root node should be: ")
     print(root.val)
     print("Verified with internal node key: " + root.key)
+    print("----------")
     return root
     pass
 
@@ -110,8 +124,13 @@ def cs351Proj1():
     fname = input("Enter filename\n")
     print ("Original File name:", fname)
     freqDict = getFrequencyCounts(fname)
-    showTree(buildHuffmanCodeTree(freqDict))
-    
+    final = []
+    currentStr = ""
+
+    goInOrder(buildHuffmanCodeTree(freqDict), final, currentStr)
+    print("The final huffman array should be: ")
+    print(final)
+
     # hcodename = determineHuffmanCode(fname)
     # print ("Huffman Code File name:", hcodename)
     
