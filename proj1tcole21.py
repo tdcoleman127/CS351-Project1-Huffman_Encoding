@@ -59,6 +59,8 @@ def getFrequencyCounts(fname):
     file = open(fname, 'r')
     
     # Read file char by char, line by line
+    # if file.size() ==
+
     for line in file:
         for char in line:
             if char not in myDict:
@@ -68,11 +70,11 @@ def getFrequencyCounts(fname):
                 # if found, increment frequency value
                 myDict[char] += 1
     file.close()
-    # print("The dictionary of frequency counts for " + fname + " is: ")
+    print("The dictionary of frequency counts for " + fname + " is: ")
     
     # Sorting dictionary values by value, ascending
     newDict = dict(sorted(myDict.items(), key=lambda x:x[1]))
-    # print(newDict)
+    print(newDict)
     return newDict
 
 def buildHuffmanCodeTree(freqCounts):
@@ -82,31 +84,45 @@ def buildHuffmanCodeTree(freqCounts):
 
     # Initalizing tree nodes with character frequency values
     for c in freqCounts:
-        # print("Initializing node: " + c)
-        # print("Character frequency value: ")
-        # print(freqCounts[c])
+        print("Initializing node: " + c)
+        print("Character frequency value: ")
+        print(freqCounts[c])
         initialNode = Node(c, freqCounts[c])
         # Pushing initialNode to min_heap
         heapq.heappush(min_heap, initialNode)
-    
-    while len(min_heap) > 1:
-        # print(priority_queue)
-        f1 = heapq.nsmallest(1, min_heap)[0]
-        t1 = heapq.heappop(min_heap)
-        f2 = heapq.nsmallest(1, min_heap)[0]
-        t2 = heapq.heappop(min_heap)
 
-        # Creating the linking node with combined value
-        # print("Creating linking node:")
-        linkingVal = f1.val + f2.val
-        # print(linkingVal)
-        # print("----------")
+    # Base case: file with only a single character
+    if(len(min_heap) == 0):
+        print("No characters available")
+        linkingNode = Node("IN", 0)
+        heapq.heappush(min_heap, linkingNode)
+    if(len(min_heap) == 1):
+        print("Length of min heap is 1, running alternative algorithm")
+        t1 = heapq.heappop(min_heap)
+        linkingVal = 1
         linkingNode = Node("IN", linkingVal)
         linkingNode.left = t1
-        linkingNode.right = t2
-
-        # Pushing the linking node to the next iteration of the min_heap
         heapq.heappush(min_heap, linkingNode)
+    # All other normal cases
+    else:
+        while len(min_heap) > 1:
+            # print(priority_queue)
+            f1 = heapq.nsmallest(1, min_heap)[0]
+            t1 = heapq.heappop(min_heap)
+            f2 = heapq.nsmallest(1, min_heap)[0]
+            t2 = heapq.heappop(min_heap)
+
+            # Creating the linking node with combined value
+            # print("Creating linking node:")
+            linkingVal = f1.val + f2.val
+            # print(linkingVal)
+            # print("----------")
+            linkingNode = Node("IN", linkingVal)
+            linkingNode.left = t1
+            linkingNode.right = t2
+
+            # Pushing the linking node to the next iteration of the min_heap
+            heapq.heappush(min_heap, linkingNode)
 
     # print(min_heap)
     # Returning root node of created tree
