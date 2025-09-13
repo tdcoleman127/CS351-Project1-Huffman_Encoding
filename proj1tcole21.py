@@ -18,7 +18,7 @@ class Node:
         self.left = None
         self.right = None
 
-    # Defined comparison for nodes "less than" logic
+    # Defined comparison for nodes' "less than" logic
     def __lt__(self, other):
         return self.val < other.val
 
@@ -34,19 +34,12 @@ def goInOrder(node, final, currentStr):
 
     # If the node is an internal node
     if(node.key == "IN"):
-        # print("Internal Node")
-        # print(node.val)
         pass
     else:
         # If the node is an character node
-        # print("Character Node for: " + node.key)
-        # print(node.val)
-
         # Add the path to the character node to the overall list
-        # print("The string being added is: " + currentStr)
         new_tuple = (node.key, currentStr)
         final.append(new_tuple)
-        # print(final)
 
     # Add "1" to currentStr for going left in tree
     goInOrder(node.right, final, currentStr + '1')
@@ -54,13 +47,12 @@ def goInOrder(node, final, currentStr):
 
 # functions for Step 1
 def getFrequencyCounts(fname):
+    # Intializing dictionary for frequency counts
     myDict = {}
     # Open file
     file = open(fname, 'r')
     
-    # Read file char by char, line by line
-    # if file.size() ==
-
+    # Read file for each character in each line
     for line in file:
         for char in line:
             if char not in myDict:
@@ -84,9 +76,6 @@ def buildHuffmanCodeTree(freqCounts):
 
     # Initalizing tree nodes with character frequency values
     for c in freqCounts:
-        print("Initializing node: " + c)
-        print("Character frequency value: ")
-        print(freqCounts[c])
         initialNode = Node(c, freqCounts[c])
         # Pushing initialNode to min_heap
         heapq.heappush(min_heap, initialNode)
@@ -98,7 +87,6 @@ def buildHuffmanCodeTree(freqCounts):
         heapq.heappush(min_heap, linkingNode)
     # Base case: file with only a single character
     elif(len(min_heap) == 1):
-        print("Length of min heap is 1, running alternative algorithm")
         t1 = heapq.heappop(min_heap)
         linkingVal = 1
         linkingNode = Node("IN", linkingVal)
@@ -107,17 +95,14 @@ def buildHuffmanCodeTree(freqCounts):
     # All other normal cases
     else:
         while len(min_heap) > 1:
-            # print(priority_queue)
+            # Popping the smallest nodes off of the min-heap but saving their values to be combined
             f1 = heapq.nsmallest(1, min_heap)[0]
             t1 = heapq.heappop(min_heap)
             f2 = heapq.nsmallest(1, min_heap)[0]
             t2 = heapq.heappop(min_heap)
 
-            # Creating the linking node with combined value
-            # print("Creating linking node:")
+            # Creating a linking node with a combined value
             linkingVal = f1.val + f2.val
-            # print(linkingVal)
-            # print("----------")
             linkingNode = Node("IN", linkingVal)
             linkingNode.left = t1
             linkingNode.right = t2
@@ -125,14 +110,8 @@ def buildHuffmanCodeTree(freqCounts):
             # Pushing the linking node to the next iteration of the min_heap
             heapq.heappush(min_heap, linkingNode)
 
-    # print(min_heap)
     # Returning root node of created tree
-    # Can verify by checking for internal node key "IN"
     root = heapq.heappop(min_heap)
-    # print("The root node should be: ")
-    # print(root.val)
-    # print("Verified with internal node key: " + root.key)
-    # print("----------")
     return root
 
 def getHuffmanCodes(huffTree):
@@ -142,12 +121,9 @@ def getHuffmanCodes(huffTree):
     # In-order traversal function
     # to encode values for all characters in tree
     goInOrder(huffTree, tuplesList, currentStr)
-    # print("The final Huffman array before and after sorting: ")
-    # print(tuplesList)
 
     # Sorting list of tuples by key, ASCII characters, ascending order
     tuplesList.sort(key=lambda item: item[0])
-    # print(tuplesList)
     
     # Return generated list of tuples
     return tuplesList
@@ -176,15 +152,11 @@ def convertToHuffman(fname, hcodename):
     testDict = {}
     # Opening up the -hcp.txt file to read
     file1 = open(hcodename, "r")
+
     for line in file1:
-        # print(line)
         # Split by four spaces in file
         scanningBox = line.split("    ")
-        # print(scanningBox)
-        # Convert string version of ASCII value 
-        # to int, then to str, to get original char
-        newWord = chr(int(scanningBox[0])) + " with value " + scanningBox[1]
-        # print("New word: " + newWord)
+        
         # Adding to a created dictionary of ASCII keys and Huffman Code values
         testDict[chr(int(scanningBox[0]))] = scanningBox[1].rstrip('\n')
     file1.close()
@@ -198,12 +170,11 @@ def convertToHuffman(fname, hcodename):
     for line in file2:
         for char in line:
             if char in testDict:
-                # print(char + " was found")
                 # Finding the Huffman value for the 
                 # char's key in the dictionary
                 huffVal = testDict[char]
                 encodedStr += huffVal
-    # print(encodedStr)
+
     file2.close()
 
     # Creating new filename with "-hec"
@@ -214,7 +185,6 @@ def convertToHuffman(fname, hcodename):
     new_file = open(newName, "w")
     new_file.write(encodedStr)
     new_file.close()
-    # print(newName)
     return newName
 
 # function for Step 3
@@ -224,18 +194,12 @@ def convertFromHuffman(encodedname, hcodename):
     # Opening up the -hcp.txt file to read
     file1 = open(hcodename, "r")
     for line in file1:
-        # print(line)
         # Split by four spaces in file
         scanningBox = line.split("    ")
-        # print(scanningBox)
-        newWord = scanningBox[1] + " with value " + chr(int(scanningBox[0]))
-        # print("New word: " + newWord)
+
         # Adding to a created dictionary of Huffman Code keys and ASCII character values
         testDict[scanningBox[1].rstrip('\n')] = chr(int(scanningBox[0]))
     file1.close()
-
-    # Verifying results
-    # print(testDict)
 
     # Decoding a string by scanning the encoded string
     # and comparing it with dictionary contents
@@ -246,16 +210,14 @@ def convertFromHuffman(encodedname, hcodename):
         for char in line:
             # Add the current character to the scanning string
             scanningStr += char
-            # print(scanningStr + " is currently being scanned")
+
             # If the scanning string is found in the dictionary
             if scanningStr in testDict:
-                # print(scanningStr + " was found in dict")
                 # add it to the decoded string
                 # and empty the scanning string to find something else
                 decodedStr += testDict[scanningStr]
                 scanningStr = ""
 
-    # print(decodedStr)
     file2.close()
 
     # Creating new filename with "-hdc"
@@ -267,8 +229,6 @@ def convertFromHuffman(encodedname, hcodename):
     new_file.write(decodedStr)
     new_file.close()
     return newName
-    pass
-
 
 def cs351Proj1():
     fname = input("Enter filename\n")
