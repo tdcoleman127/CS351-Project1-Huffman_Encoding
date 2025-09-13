@@ -49,7 +49,9 @@ def goInOrder(node, final, currentStr):
 def getFrequencyCounts(fname):
     # Intializing dictionary for frequency counts
     myDict = {}
+
     # Open file
+
     file = open(fname, 'r')
     
     # Read file for each character in each line
@@ -231,7 +233,10 @@ def convertFromHuffman(encodedname, hcodename):
     return newName
 
 def cs351Proj1():
-    fname = input("Enter filename")
+    try:
+        fname = input("Enter filename")
+    except EOFError:
+        print("EOF error occured")
     print ("Original File name:", fname)
     
     hcodename = determineHuffmanCode(fname)
