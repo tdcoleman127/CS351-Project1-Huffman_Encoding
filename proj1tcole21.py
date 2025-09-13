@@ -231,7 +231,7 @@ def convertFromHuffman(encodedname, hcodename):
     return newName
 
 def cs351Proj1():
-    fname = input("Enter filename\n")
+    fname = input("Enter filename")
     print ("Original File name:", fname)
     
     hcodename = determineHuffmanCode(fname)
