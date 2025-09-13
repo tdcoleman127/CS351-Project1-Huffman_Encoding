@@ -91,12 +91,13 @@ def buildHuffmanCodeTree(freqCounts):
         # Pushing initialNode to min_heap
         heapq.heappush(min_heap, initialNode)
 
-    # Base case: file with only a single character
+    # Base case: file with no characters
     if(len(min_heap) == 0):
         print("No characters available")
         linkingNode = Node("IN", 0)
         heapq.heappush(min_heap, linkingNode)
-    if(len(min_heap) == 1):
+    # Base case: file with only a single character
+    elif(len(min_heap) == 1):
         print("Length of min heap is 1, running alternative algorithm")
         t1 = heapq.heappop(min_heap)
         linkingVal = 1
