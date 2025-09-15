@@ -234,20 +234,24 @@ def convertFromHuffman(encodedname, hcodename):
 
 def cs351Proj1():
     try:
-        fname = input("Enter filename")
+        fname = input("Enter filename: ").strip()
     except EOFError:
-        print("EOF error occured")
-    print ("Original File name:", fname)
+        print("No interactive input in the autograder environment.")
+        return
+    if not fname:
+        print("Empty filename.")
+        return
+        
+    hcp = determineHuffmanCode(fname)
+    print ("Huffman Code File name:", hcp)
     
-    hcodename = determineHuffmanCode(fname)
-    print ("Huffman Code File name:", hcodename)
+    hec = convertToHuffman(fname, hcp)
+    print ("Huffman Encoded File name:", hec)
     
-    encodedname = convertToHuffman(fname, hcodename)
-    print ("Huffman Encoded File name:", encodedname)
-    
-    decodedname = convertFromHuffman(encodedname, hcodename)
-    print ("Final/Decoded File name:", decodedname)
+    hdc = convertFromHuffman(hec, hcp)
+    print ("Final/Decoded File name:", hdc)
     
 #call main function
-cs351Proj1()
+if __name__ == "__main__":
+    cs351Proj1()
     
